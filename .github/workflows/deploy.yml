@@ -39,11 +39,11 @@ jobs:
 
       # Tag Docker Image
       - name: Tag Docker Image
-        run: docker tag train-ticket-reservation kasiviswanadh-raga/train-ticket-reservation:latest
+        run: docker tag train-ticket-reservation ragakasiviswanadh/train-ticket-reservation:latest
 
       # Push to Docker Hub
       - name: Push Docker Image
-        run: docker push kasiviswanadh-raga/train-ticket-reservation:latest
+        run: docker push ragakasiviswanadh/train-ticket-reservation:latest
 
       # Configure AWS Credentials
       - name: Configure AWS Credentials
