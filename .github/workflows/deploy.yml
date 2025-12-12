@@ -55,11 +55,10 @@ jobs:
 
       # Update kubeconfig
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --region ap-south-1 --name YOUR-EKS-CLUSTER-NAME
+        run: aws eks update-kubeconfig --region ap-south-1 --name my-eks-cluster
 
       # Deploy to EKS (Apply manifests)
       - name: Apply Kubernetes Manifests
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
-
