@@ -1,0 +1,65 @@
+name: CI-CD to EKS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout source code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Install Java & Maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Build WAR file
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      # Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build Docker Image
+      - name: Build Docker Image
+        run: docker build -t train-ticket-reservation .
+
+      # Tag Docker Image
+      - name: Tag Docker Image
+        run: docker tag train-ticket-reservation kasiviswanadh-raga/train-ticket-reservation:latest
+
+      # Push to Docker Hub
+      - name: Push Docker Image
+        run: docker push kasiviswanadh-raga/train-ticket-reservation:latest
+
+      # Configure AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # Update kubeconfig
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --region ap-south-1 --name YOUR-EKS-CLUSTER-NAME
+
+      # Deploy to EKS (Apply manifests)
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
