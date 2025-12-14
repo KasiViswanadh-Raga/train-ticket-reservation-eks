@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ticket-app
-          image: kasiviswanadh-raga/train-ticket-reservation:latest
+          image: ragakasiviswanadh/train-ticket-reservation:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

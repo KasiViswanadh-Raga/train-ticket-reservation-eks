@@ -9,7 +9,6 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-      protocol: TCP
+      protocol: http
   selector:
     app: train-ticket-reservation
-
