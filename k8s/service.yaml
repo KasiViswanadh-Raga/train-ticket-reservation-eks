@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: train-ticket-service
-  labels:
-    app: train-ticket-reservation
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
 spec:
   type: LoadBalancer
+  selector:
+    app: train-ticket
   ports:
     - port: 80
       targetPort: 8080
-      protocol: http
-  selector:
-    app: train-ticket-reservation
+      protocol: TCP
