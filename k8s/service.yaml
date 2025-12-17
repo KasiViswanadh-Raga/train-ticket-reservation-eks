@@ -5,10 +5,8 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: train-ticket
+    app: train-ticket-reservation   # ✅ MATCHES DEPLOYMENT
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
-
-
