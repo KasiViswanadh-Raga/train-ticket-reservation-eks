@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: train-ticket-service
 spec:
+  type: LoadBalancer
   selector:
     app: train-ticket
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  type: ClusterIP
+
 
